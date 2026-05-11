@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drótszamár Kerékpáros Kreszpark – Pécs</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sky:    #e8f4fd;
+  --grass:  #4caf50;
+  --grass2: #388e3c;
+  --road:   #546e7a;
+  --yellow: #ffc107;
+  --orange: #ff7043;
+  --red:    #e53935;
+  --blue:   #1976d2;
+  --white:  #ffffff;
+  --ink:    #1a2a1a;
+  --muted:  #5a6e5a;
+  --cream:  #fdf8f0;
+  --stripe: #fff9e6;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: var(--white);
+  border-bottom: 3px solid var(--grass);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800; font-size: 1.1rem;
+  color: var(--grass2);
+  text-decoration: none;
+}
+.nav-brand .bike-icon { font-size: 1.5rem; }
+.nav-links { display: flex; gap: 0.25rem; list-style: none; }
+.nav-links a {
+  font-weight: 700; font-size: 0.82rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-links a:hover { background: var(--grass); color: #fff; }
+.nav-cta {
+  background: var(--yellow);
+  color: var(--ink) !important;
+  font-weight: 800 !important;
+  padding: 0.45rem 1.1rem !important;
+}
+.nav-cta:hover { background: var(--orange) !important; color: #fff !important; }
+
+/* ── HERO ── */
+.hero {
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(180deg, #c8e6fa 0%, #dff0d8 55%, #a5d6a7 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4rem 2rem 6rem;
+}
+
+/* Animated road stripes */
+.road-strip {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 90px;
+  background: var(--road);
+  display: flex; align-items: center;
+}
+.road-lines {
+  width: 100%; height: 6px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--yellow) 0px, var(--yellow) 60px,
+    transparent 60px, transparent 120px
+  );
+  animation: roadMove 1.5s linear infinite;
+}
+@keyframes roadMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-120px); }
+}
+
+/* Road signs decorative */
+.sign-post {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center;
+  animation: sway 4s ease-in-out infinite;
+}
+@keyframes sway {
+  0%,100% { transform: rotate(-1deg); }
+  50%      { transform: rotate(1deg); }
+}
+.sign-post .post { width: 6px; height: 70px; background: #666; border-radius: 3px; }
+.sign-post .sign-face {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; font-weight: 900;
+  border: 4px solid #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  order: -1;
+}
+.s1 { left: 5%; bottom: 70px; }
+.s2 { right: 8%; bottom: 70px; }
+.s3 { left: 18%; bottom: 70px; }
+
+/* Floating bikes animation */
+.bike-float {
+  position: absolute;
+  font-size: 2.5rem;
+  animation: bikeFly var(--dur, 12s) var(--delay, 0s) linear infinite;
+  bottom: 85px;
+}
+@keyframes bikeFly {
+  from { transform: translateX(-150px); }
+  to   { transform: translateX(calc(100vw + 150px)); }
+}
+
+/* Trees */
+.tree {
+  position: absolute; bottom: 82px;
+  display: flex; flex-direction: column; align-items: center;
+  animation: treeSway 3s ease-in-out infinite;
+}
+.tree-top { width: 0; height: 0; border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 45px solid #4caf50; }
+.tree-trunk { width: 10px; height: 18px; background: #795548; border-radius: 2px; }
+@keyframes treeSway { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+
+/* Hero content */
+.hero-content {
+  position: relative; z-index: 10;
+  text-align: center; max-width: 700px;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--yellow);
+  color: var(--ink);
+  font-weight: 800; font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.hero h1 span { color: var(--grass2); }
+.hero-sub {
+  font-size: 1.1rem; color: var(--muted);
+  max-width: 520px; margin: 0 auto 2.5rem;
+  font-weight: 600;
+}
+.hero-buttons {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.8rem;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.25s;
+  border: none; cursor: pointer;
+}
+.btn-primary { background: var(--grass); color: #fff; box-shadow: 0 4px 14px rgba(76,175,80,0.4); }
+.btn-primary:hover { background: var(--grass2); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(76,175,80,0.5); }
+.btn-secondary { background: var(--white); color: var(--ink); box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+.btn-secondary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  background: var(--grass2);
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-item {
+  text-align: center;
+  padding: 1rem 1.5rem;
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Baloo 2', cursive;
+  font-size: 2.6rem; font-weight: 800;
+  color: var(--yellow);
+  line-height: 1;
+  display: block;
+}
+.stat-label {
+  font-size: 0.85rem; font-weight: 700;
+  color: rgba(255,255,255,0.85);
+  margin-top: 0.25rem;
+}
+
+/* ── SECTIONS ── */
+.section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+.section-tag {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: #e8f5e9;
+  color: var(--grass2);
+  font-weight: 800; font-size: 0.78rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.3rem 0.9rem; border-radius: 20px;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-family: 'Baloo 2', cursive;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+  line-height: 1.2;
+}
+h2 span { color: var(--grass2); }
+p { color: var(--muted); margin-bottom: 1rem; font-weight: 600; }
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+}
+.about-visual {
+  position: relative;
+}
+.about-card {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.about-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  background: linear-gradient(90deg, var(--grass), var(--yellow), var(--orange));
+}
+.about-mini-road {
+  background: #cfd8dc;
+  border-radius: 12px;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center;
+}
+.mini-road-center {
+  width: 100%; height: 4px;
+  background: repeating-linear-gradient(90deg, var(--yellow) 0, var(--yellow) 20px, transparent 20px, transparent 40px);
+}
+.mini-bike { position: absolute; font-size: 2rem; animation: miniBike 3s linear infinite; bottom: 20px; }
+@keyframes miniBike { from { left: -40px; } to { left: 110%; } }
+.mini-sign { position: absolute; font-size: 1.5rem; }
+
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+.feature-list li {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-weight: 700; color: var(--ink); font-size: 0.95rem;
+}
+.feature-list li::before {
+  content: '✓';
+  display: flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--grass); color: #fff;
+  font-weight: 900; font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ── BIKES SECTION ── */
+.bikes-bg {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+  padding: 6rem 2rem;
+}
+.bikes-inner { max-width: 1100px; margin: 0 auto; }
+.bikes-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.bike-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.bike-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(76,175,80,0.2); }
+.bike-card::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+  background: var(--grass);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+.bike-card:hover::after { transform: scaleX(1); }
+.bike-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+.bike-name {
+  font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 1.1rem;
+  color: var(--ink); margin-bottom: 0.5rem;
+}
+.bike-card p { font-size: 0.88rem; margin-bottom: 0; }
+.bike-tag {
+  display: inline-block; margin-top: 0.75rem;
+  background: #e8f5e9; color: var(--grass2);
+  font-size: 0.72rem; font-weight: 800;
+  padding: 0.2rem 0.65rem; border-radius: 10px;
+}
+
+/* ── OPENING HOURS ── */
+.hours-section { background: var(--ink); padding: 6rem 2rem; color: #fff; }
+.hours-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.hours-section h2 { color: var(--yellow); }
+.hours-section .section-tag { background: rgba(255,193,7,0.15); color: var(--yellow); }
+.hours-section p { color: rgba(255,255,255,0.7); }
+.hours-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; }
+.hours-table tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.hours-table tr:last-child { border-bottom: none; }
+.hours-table td { padding: 0.85rem 0; font-weight: 700; }
+.hours-table td:first-child { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+.hours-table td:last-child { color: var(--yellow); text-align: right; }
+.hours-table .closed td:last-child { color: #ef9a9a; }
+.contact-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: 1.5rem;
+}
+.contact-row {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.contact-row:last-child { border-bottom: none; padding-bottom: 0; }
+.contact-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.1rem; }
+.contact-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem; }
+.contact-value { font-weight: 700; color: var(--white); font-size: 0.95rem; }
+.contact-value a { color: var(--yellow); text-decoration: none; }
+.contact-value a:hover { text-decoration: underline; }
+
+/* ── EDUCATION ── */
+.edu-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+  margin-top: 2rem;
+}
+.edu-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  display: flex; gap: 1.25rem;
+  transition: box-shadow 0.3s;
+}
+.edu-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+.edu-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+}
+.edu-icon.g { background: #e8f5e9; }
+.edu-icon.y { background: #fff8e1; }
+.edu-icon.b { background: #e3f2fd; }
+.edu-icon.o { background: #fff3e0; }
+.edu-title {
+  font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 1.05rem;
+  color: var(--ink); margin-bottom: 0.35rem;
+}
+.edu-card p { margin-bottom: 0; font-size: 0.9rem; }
+
+/* ── HISTORY TIMELINE ── */
+.history-bg { background: var(--stripe); padding: 6rem 2rem; }
+.history-inner { max-width: 800px; margin: 0 auto; }
+.timeline { position: relative; margin-top: 3rem; }
+.timeline::before {
+  content: ''; position: absolute; left: 28px; top: 0; bottom: 0;
+  width: 3px; background: linear-gradient(to bottom, var(--grass), var(--yellow));
+  border-radius: 2px;
+}
+.tl-item {
+  display: flex; gap: 2rem; margin-bottom: 2.5rem;
+  opacity: 0; transform: translateX(-20px);
+  transition: all 0.6s ease;
+}
+.tl-item.visible { opacity: 1; transform: translateX(0); }
+.tl-dot {
+  width: 58px; height: 58px; border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--grass);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(76,175,80,0.2);
+  position: relative; z-index: 1;
+}
+.tl-content { padding-top: 0.5rem; }
+.tl-year {
+  font-family: 'Baloo 2', cursive; font-weight: 800;
+  color: var(--grass2); font-size: 1rem; margin-bottom: 0.25rem;
+}
+.tl-title { font-weight: 800; color: var(--ink); font-size: 1.05rem; margin-bottom: 0.35rem; }
+.tl-content p { font-size: 0.9rem; margin-bottom: 0; }
+
+/* ── MAP ── */
+.map-section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+.map-wrap {
+  border-radius: 24px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  margin-top: 2rem;
+  border: 3px solid var(--grass);
+}
+.map-wrap iframe { display: block; width: 100%; height: 420px; border: none; }
+
+/* ── CTA BANNER ── */
+.cta-banner {
+  background: linear-gradient(135deg, var(--grass) 0%, var(--grass2) 100%);
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: '🚲 🛴 🚲 🛴 🚲 🛴 🚲 🛴 🚲 🛴 🚲 🛴';
+  position: absolute; bottom: 0.5rem; left: 0; right: 0;
+  font-size: 1.5rem;
+  opacity: 0.15;
+  letter-spacing: 0.5rem;
+  white-space: nowrap;
+}
+.cta-banner h2 { color: var(--white); margin-bottom: 1rem; }
+.cta-banner p { color: rgba(255,255,255,0.85); max-width: 500px; margin: 0 auto 2rem; }
+.btn-white { background: var(--white); color: var(--grass2); }
+.btn-white:hover { background: var(--yellow); color: var(--ink); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+
+/* ── FOOTER ── */
+footer {
+  background: #1a2a1a;
+  padding: 3rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-brand {
+  font-family: 'Baloo 2', cursive; font-weight: 800;
+  color: var(--yellow); font-size: 1.1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.footer-info { font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+.footer-info a { color: var(--yellow); text-decoration: none; }
+.footer-social { display: flex; gap: 0.75rem; }
+.social-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; text-decoration: none;
+  transition: background 0.2s;
+  color: #fff;
+}
+.social-btn:hover { background: var(--yellow); color: var(--ink); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  .about-grid, .hours-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .bikes-grid { grid-template-columns: 1fr 1fr; }
+  .edu-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; }
+}
+@media (max-width: 480px) {
+  .bikes-grid { grid-template-columns: 1fr; }
+  .stats-strip { grid-template-columns: 1fr 1fr; }
+  .hero-buttons { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">
+    <span class="bike-icon">🚲</span>
+    Drótszamár Kreszpark
+  </a>
+  <ul class="nav-links">
+    <li><a href="#rolunk">Rólunk</a></li>
+    <li><a href="#bringak">Bringák</a></li>
+    <li><a href="#oktatas">Oktatás</a></li>
+    <li><a href="#historia">Történet</a></li>
+    <li><a href="#nyitvatartas">Nyitvatartás</a></li>
+    <li><a href="#terkep" class="nav-cta">📍 Hogyan jutok el?</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- Trees -->
+  <div class="tree" style="left:3%; animation-delay:0s;"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="left:8%; animation-delay:0.5s;"><div class="tree-top" style="border-bottom-color:#388e3c"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="right:5%; animation-delay:1s;"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="right:12%; animation-delay:0.3s;"><div class="tree-top" style="border-bottom-color:#2e7d32"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="left:25%; animation-delay:0.8s;"><div class="tree-top"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="right:28%; animation-delay:0.2s;"><div class="tree-top" style="border-bottom-color:#388e3c"></div><div class="tree-trunk"></div></div>
+
+  <!-- Road signs -->
+  <div class="sign-post s1" style="animation-delay:0s">
+    <div class="sign-face" style="background:#e53935;">⚠️</div>
+    <div class="post"></div>
+  </div>
+  <div class="sign-post s2" style="animation-delay:1.5s">
+    <div class="sign-face" style="background:#1976d2; border-radius:0;">P</div>
+    <div class="post"></div>
+  </div>
+  <div class="sign-post s3" style="animation-delay:0.8s">
+    <div class="sign-face" style="background:#ffc107; color:#000; font-size:1.3rem; font-family:'Baloo 2',cursive; border-radius:4px;">30</div>
+    <div class="post"></div>
+  </div>
+
+  <!-- Animated bikes -->
+  <div class="bike-float" style="--dur:10s; --delay:0s;">🚲</div>
+  <div class="bike-float" style="--dur:14s; --delay:4s; bottom:98px; font-size:2rem;">🛴</div>
+  <div class="bike-float" style="--dur:17s; --delay:8s; font-size:1.8rem;">🚲</div>
+
+  <!-- Road strip -->
+  <div class="road-strip"><div class="road-lines"></div></div>
+
+  <!-- Hero content -->
+  <div class="hero-content">
+    <div class="hero-badge">🏆 50+ éve Pécs kedvenc kerékpáros parkja</div>
+    <h1>Drótszamár<br><span>Kerékpáros<br>Kreszpark</span></h1>
+    <p class="hero-sub">Ahol a gyerekek biztonságban tanulnak közlekedni — és az egész család jól szórakozik Pécsett, a Páfrány utcában.</p>
+    <div class="hero-buttons">
+      <a href="#bringak" class="btn btn-primary">🚲 Fedezd fel a bringákat</a>
+      <a href="#nyitvatartas" class="btn btn-secondary">🕐 Nyitvatartás</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <span class="stat-num">7 190</span>
+    <div class="stat-label">m² árnyas park</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">700 m</span>
+    <div class="stat-label">útháló a parkban</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">110+</span>
+    <div class="stat-label">közlekedési tábla</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">50+</span>
+    <div class="stat-label">év folyamatos működés</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="rolunk">
+  <div class="about-grid">
+    <div>
+      <div class="section-tag">🌳 Rólunk</div>
+      <h2>Pécs legjobb <span>kerékpáros</span> kalandparkja</h2>
+      <p>A Drótszamár Kerékpáros Kreszparkot 1973-ban adták át Pécsett, az újmecsekaljai kiserdőben — és azóta a pécsi gyerekek generációi itt tanulták meg a közlekedés alapszabályait. A parkot 2013 óta a <strong>Free Mobility Egyesület</strong> üzemelteti.</p>
+      <p>A zárt, biztonságos környezet ideális arra, hogy a legkisebbek valódi közlekedési táblák, működő jelzőlámpák és zebrák között próbálják ki magukat kerékpáron — és hogy a nagyobbak is visszatérjenek a gyerekkor varázsához.</p>
+      <p>A park egyik különlegessége a <strong>mozgássérülteknek kialakított kerékpárkölcsönző</strong>: riksák, tandemek, fekvő biciklik, kézzel hajtható járgányok és triciklik várják a látogatókat.</p>
+      <ul class="feature-list">
+        <li>Zárt, biztonságos terület gyerekeknek</li>
+        <li>Speciális kerékpárok mozgássérülteknek</li>
+        <li>Felszerelt oktatóterem, interaktív tábla</li>
+        <li>Körforgalom és valódi jelzőlámpa-rendszer</li>
+        <li>Születésnapok és iskolai csoportok fogadása</li>
+        <li>Akadálymentes bejárat és mosdók</li>
+      </ul>
+    </div>
+    <div class="about-visual">
+      <div class="about-card">
+        <div class="about-mini-road">
+          <div class="mini-road-center"></div>
+          <div class="mini-bike">🚲</div>
+          <div class="mini-sign" style="left:15%; top:15%;">🚦</div>
+          <div class="mini-sign" style="right:10%; top:20%;">⛔</div>
+          <div class="mini-sign" style="left:50%; bottom:10%;">🔰</div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; text-align:center;">
+          <div style="background:#e8f5e9; border-radius:12px; padding:1rem;">
+            <div style="font-size:1.8rem;">👨‍👩‍👧‍👦</div>
+            <div style="font-weight:800; font-size:0.85rem; color:var(--grass2); margin-top:0.3rem;">Családos látogatók</div>
+          </div>
+          <div style="background:#fff8e1; border-radius:12px; padding:1rem;">
+            <div style="font-size:1.8rem;">🏫</div>
+            <div style="font-weight:800; font-size:0.85rem; color:#f57f17; margin-top:0.3rem;">Iskolai csoportok</div>
+          </div>
+          <div style="background:#e3f2fd; border-radius:12px; padding:1rem;">
+            <div style="font-size:1.8rem;">♿</div>
+            <div style="font-weight:800; font-size:0.85rem; color:#1565c0; margin-top:0.3rem;">Akadálymentesített</div>
+          </div>
+          <div style="background:#fce4ec; border-radius:12px; padding:1rem;">
+            <div style="font-size:1.8rem;">🎂</div>
+            <div style="font-weight:800; font-size:0.85rem; color:#c62828; margin-top:0.3rem;">Születésnapok</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIKES -->
+<div class="bikes-bg" id="bringak">
+  <div class="bikes-inner">
+    <div class="section-tag">🚲 Bringapark</div>
+    <h2>Különleges <span>kerékpárok</span> mindenkinek</h2>
+    <p style="max-width:600px;">A parkban nem csak simát hétköznapi bicikliket találsz — egyedi, különleges járgányok várják a kalandvágyó látogatókat!</p>
+    <div class="bikes-grid">
+      <div class="bike-card">
+        <span class="bike-emoji">🚲</span>
+        <div class="bike-name">Hagyományos kerékpár</div>
+        <p>Klasszikus felnőtt és gyerek kerékpárok minden méretben, KRESZ-oktatáshoz és szabad bringázáshoz.</p>
+        <span class="bike-tag">Minden korosztálynak</span>
+      </div>
+      <div class="bike-card">
+        <span class="bike-emoji">🚴</span>
+        <div class="bike-name">Fekvő kerékpár</div>
+        <p>Visszadőlt pozícióban, ergonomikus ülőfelülettel — különleges élmény, amit máshol nem találsz Pécsett.</p>
+        <span class="bike-tag">Különleges élmény</span>
+      </div>
+      <div class="bike-card">
+        <span class="bike-emoji">👐</span>
+        <div class="bike-name">Kézzel hajtható bicikli</div>
+        <p>Mozgássérültek számára kialakított speciális kerékpár — a Free Mobility Egyesület saját fejlesztése.</p>
+        <span class="bike-tag">Akadálymentes</span>
+      </div>
+      <div class="bike-card">
+        <span class="bike-emoji">🚗</span>
+        <div class="bike-name">Tandem kerékpár</div>
+        <p>Ketten együtt — szülőknek és gyerekeknek, barátoknak, pároknak. Garantált nevetés és csapatmunka!</p>
+        <span class="bike-tag">Páros élmény</span>
+      </div>
+      <div class="bike-card">
+        <span class="bike-emoji">🛺</span>
+        <div class="bike-name">Riksa</div>
+        <p>Háromkerekű, fedett riksa — komfortos élmény az egész csapatnak a park kanyargós útjain.</p>
+        <span class="bike-tag">Csoportos</span>
+      </div>
+      <div class="bike-card">
+        <span class="bike-emoji">🔄</span>
+        <div class="bike-name">Fordított kormányzású bicikli</div>
+        <p>A legnehezebb kihívás a parkban! Bal-jobb felcserélve — meglepetés garantálva még a rutinos bringásoknak is.</p>
+        <span class="bike-tag">Kihívás!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<section class="section" id="oktatas">
+  <div class="section-tag">🎓 Oktatás</div>
+  <h2>Tanulás, <span>játékosan</span></h2>
+  <p style="max-width:640px;">A Drótszamár nem csak egy bringás park — igazi közlekedési nevelőközpont is. Felszerelt oktatóteremmel és valódi körülményekkel várjuk az iskolás csoportokat és a nyári napköziseket.</p>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-icon g">🚦</div>
+      <div>
+        <div class="edu-title">Elméleti KRESZ-oktatás</div>
+        <p>Interaktív táblával és projektorral felszerelt oktatóteremben, korszerű KRESZ-szoftverrel sajátíthatják el a gyerekek a közlekedés alapszabályait.</p>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon y">🏆</div>
+      <div>
+        <div class="edu-title">KRESZ-vetélkedők</div>
+        <p>Rendszeres versenyeket tartunk: elméleti, ügyességi és szabályossági pályán mérheti össze tudását kicsik és nagyobbak csapata — a "Ki a mester két keréken?" kupa keretein belül.</p>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon b">🏫</div>
+      <div>
+        <div class="edu-title">Iskolai csoportfoglalkozások</div>
+        <p>Egész osztályok és iskolás csoportok számára szervezett programok, egyéni időpontfoglalással. Pedagógusok és szülők is részt vehetnek.</p>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon o">☀️</div>
+      <div>
+        <div class="edu-title">Nyári napközis program</div>
+        <p>Minden nyáron napközis tanulókat fogadunk — kirándulás, bringázás, KRESZ-oktatás és sokféle élmény vár a nyári szünetben.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY -->
+<div class="history-bg" id="historia">
+  <div class="history-inner">
+    <div class="section-tag">📖 Történet</div>
+    <h2>Több mint <span>50 éve</span> veletek</h2>
+    <p>A Drótszamár Kerékpáros Kreszpark Pécs egyik legrégebbi és legszeretettebb közösségi tere — generációk nőttek fel a kanyargós utain.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">🌱</div>
+        <div class="tl-content">
+          <div class="tl-year">1968–1973</div>
+          <div class="tl-title">Társadalmi munka: a park megszületik</div>
+          <p>5 éven át, összesen 2600 óra önkéntes munkával építették a pécsi középiskolások és szakmunkások az ország akkor legmodernebb közlekedési parkját — az újmecsekaljai kiserdőben.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">🎉</div>
+        <div class="tl-content">
+          <div class="tl-year">1973. április 4.</div>
+          <div class="tl-title">Hivatalos átadó</div>
+          <p>110 közlekedési táblával, működő villanyrendőrrel és vasúti fénysorompóval nyílt meg a park. A pécsi gyerekek napokig alig tudtak aludni az izgalomtól.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">🤝</div>
+        <div class="tl-content">
+          <div class="tl-year">2013</div>
+          <div class="tl-title">Free Mobility Egyesület átveszi az üzemeltetést</div>
+          <p>Somogyvári Imre és a Free Mobility Egyesület veszi át a park gondozását. Különleges, mozgássérülteknek is alkalmas kerékpárokat fejlesztenek és állítanak üzembe.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">🔨</div>
+        <div class="tl-content">
+          <div class="tl-year">2020</div>
+          <div class="tl-title">Nagyszabású felújítás</div>
+          <p>40 millió forintos EU-s támogatással teljesen megújul a park: körforgalom, új oktatótér interaktív táblával, felújított fogadóépület és akadálymentes mosdók épülnek.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">🏆</div>
+        <div class="tl-content">
+          <div class="tl-year">2023</div>
+          <div class="tl-title">50. születésnap</div>
+          <p>Nagyszabású jubileumi versennnyel ünneplik az 50 éves parkot: a Kerékpáros Iskola Kupa és a "Ki a mester két keréken?" vetélkedő városi döntőjével.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OPENING HOURS -->
+<div class="hours-section" id="nyitvatartas">
+  <div class="hours-inner">
+    <div>
+      <div class="section-tag">🕐 Nyitvatartás</div>
+      <h2>Mikor látogass el?</h2>
+      <p>A park egész évben fogad látogatókat — iskolai csoportoknak és egyéni látogatóknak egyaránt. Télen csökkentett nyitvatartással üzemel.</p>
+      <table class="hours-table">
+        <tr><td>Hétfő</td><td>14:00 – 19:00</td></tr>
+        <tr><td>Kedd</td><td>14:00 – 19:00</td></tr>
+        <tr class="closed"><td>Szerda</td><td>Zárva</td></tr>
+        <tr><td>Csütörtök</td><td>14:00 – 19:00</td></tr>
+        <tr><td>Péntek</td><td>14:00 – 19:00</td></tr>
+        <tr><td>Szombat</td><td>13:00 – 19:00</td></tr>
+        <tr><td>Vasárnap</td><td>13:00 – 19:00</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="section-tag" style="background:rgba(255,193,7,0.15);color:var(--yellow);">📞 Elérhetőség</div>
+      <h2>Kapcsolat</h2>
+      <p>Kérdésed van? Csoportos látogatást tervezel? Írj vagy hívj minket!</p>
+      <div class="contact-card">
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Cím</div>
+            <div class="contact-value">7633 Pécs, Páfrány utca 44.<br><span style="color:rgba(255,255,255,0.5); font-size:0.85rem;">Újmecsekalja, kiserdő mellett</span></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Telefon</div>
+            <div class="contact-value"><a href="tel:+36208016860">+36 20 801 6860</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-label">E-mail</div>
+            <div class="contact-value"><a href="mailto:somogyvari.imre53@gmail.com">somogyvari.imre53@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🌐</div>
+          <div>
+            <div class="contact-label">Üzemeltető</div>
+            <div class="contact-value">Free Mobility Egyesület</div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">♿</div>
+          <div>
+            <div class="contact-label">Akadálymentesség</div>
+            <div class="contact-value">Akadálymentes bejárat és parkoló ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="map-section" id="terkep">
+  <div class="section-tag">📍 Megközelítés</div>
+  <h2>Hogyan <span>jutok el</span>?</h2>
+  <p>A park Pécs Uránváros negyedében, a Páfrány utcában található, könnyen elérhető tömegközlekedéssel és autóval egyaránt.</p>
+  <div class="map-wrap">
+    <iframe
+      src="https://www.openstreetmap.org/export/embed.html?bbox=18.2100%2C46.0700%2C18.2400%2C46.0900&layer=mapnik&marker=46.0800%2C18.2250"
+      title="Drótszamár Kreszpark térképe"
+      loading="lazy">
+    </iframe>
+  </div>
+  <p style="margin-top:1rem; font-size:0.88rem;">
+    🚌 <strong>Busz:</strong> 34-es, 35-ös megállók közel &nbsp;·&nbsp;
+    🚗 <strong>Autó:</strong> Páfrány utca 44., ingyenes parkoló &nbsp;·&nbsp;
+    🚲 <strong>Kerékpár:</strong> kerékpárúton is megközelíthető
+  </p>
+</div>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <h2>Gyere el, tekerj egyet! 🚲</h2>
+  <p>Hozd el a családod, az osztályodat vagy a barátaidat — a Drótszamár Kerékpáros Kreszparkban mindenki megtalálja a kedvencét!</p>
+  <a href="tel:+36208016860" class="btn btn-white">📞 Hívj minket!</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">🚲 Drótszamár Kerékpáros Kreszpark</div>
+  <div class="footer-info">
+    7633 Pécs, Páfrány utca 44. &nbsp;·&nbsp;
+    <a href="tel:+36208016860">+36 20 801 6860</a> &nbsp;·&nbsp;
+    Üzemelteti: Free Mobility Egyesület
+  </div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/kreszparkpecs/" target="_blank" class="social-btn" title="Facebook">f</a>
+  </div>
+</footer>
+
+<script>
+  // Timeline scroll reveal
+  const items = document.querySelectorAll('.tl-item');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  items.forEach(i => obs.observe(i));
+</script>
+
+</body>
+</html>
